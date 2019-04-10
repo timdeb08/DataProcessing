@@ -43,8 +43,10 @@ def extract_movies(dom):
 
         # Append title to dict
         movie['titles'] = listing.find('h3').find('a').text
+
         # Append rating to dict
         movie['ratings'] = float(listing.find('strong').text)
+
         # Append year of release to dict
         years = listing.find('span', 'lister-item-year text-muted unbold').text
         if len(years) > 6:
@@ -53,6 +55,7 @@ def extract_movies(dom):
         else:
             years = years[1:5]
         movie['years'] = years
+
         # Append list of actors to dict
         actors_movie = []
         actors = listing.find_all(href=re.compile('adv_li_st'))
@@ -60,6 +63,7 @@ def extract_movies(dom):
             actors_movie.append(actor.text)
         actors_movie = ', '.join(actors_movie)
         movie['actors'] = actors_movie
+
         # Append runtime to dict
         movie['runtime'] = int(listing.find('span', 'runtime').text[:3])
 
@@ -74,9 +78,9 @@ def save_csv(outfile, movies):
     Output a CSV file containing highest rated movies.
     """
     # Write the movies list to the csv file
-    with open(OUTPUT_CSV, 'w') as outfile:
+    with open('movies.csv', 'w') as output_file:
             fields = ['titles', 'ratings', 'years', 'actors', 'runtime']
-            writer = csv.DictWriter(outfile, fieldnames=fields)
+            writer = csv.DictWriter(output_file, fieldnames=fields)
             writer.writeheader()
             for data in movies:
                 writer.writerow(data)
