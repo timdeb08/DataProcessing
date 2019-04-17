@@ -14,6 +14,7 @@ import json
 INPUT_CSV = "input.csv"
 
 def read_file():
+
     # Read the csv file and convert into panda dataframa
     df = pd.read_csv(INPUT_CSV, usecols = ['Country', 'Region', 'Pop. Density (per sq. mi.)',\
                                             'Infant mortality (per 1000 births)', 'GDP ($ per capita) dollars'])
@@ -68,8 +69,9 @@ def analyze_dataframe(df):
     print('Maximum: ', df['Infant mortality (per 1000 births)'].max() )
 
     # Plot boxplot of the Infant mortality per 1000 births
-    plt.boxplot(df['Infant mortality (per 1000 births)'])
-    #plt.set_title('I AM BOXPLOT', fontsize=10)
+    df.boxplot(column='Infant mortality (per 1000 births)')
+    plt.title('Boxplot')
+    plt.suptitle('')
     plt.show()
 
 
