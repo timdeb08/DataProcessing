@@ -1,0 +1,92 @@
+<!--
+# Name: Tim de Boer
+# Student number: 11202351
+-->
+<!--
+This html ....
+-->
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Analysis</title>
+  </head>
+
+  <body>
+
+    <h1> Het zicht rond Schiphol in de zomer van 2018</h1>
+    <canvas id="linechart" width="450" height="550">
+    </canvas>
+
+    <script>
+
+    // Transform the data to screen coordinates
+    function createTransform(domain, range){
+        // domain is a two-element array of the data bounds [domain_min, domain_max]
+        // range is a two-element array of the screen bounds [range_min, range_max]
+        // this gives you two equations to solve:
+        // range_min = alpha * domain_min + beta
+        // range_max = alpha * domain_max + beta
+        // a solution would be:
+
+        var domain_min = domain[0]
+        var domain_max = domain[1]
+        var range_min = range[0]
+        var range_max = range[1]
+
+        // formulas to calculate the alpha and the beta
+        var alpha = (range_max - range_min) / (domain_max - domain_min)
+        var beta = range_max - alpha * domain_max
+
+        // returns the function for the linear transformation (y= a * x + b)
+        return function(x){
+            return alpha * x + beta;
+        }
+    }
+    var xAxis = createTransform([20180621, 20180923], [50,400]);
+    var yAxis = createTransform([50, 90], [400,50]);
+
+    // Read the json file and parse it into txtFile
+    var fileName = "data.json";
+    var txtFile = new XMLHttpRequest();
+    txtFile.onreadystatechange = function() {
+        if (txtFile.readyState === 4 && txtFile.status == 200) {
+            console.log(JSON.parse(txtFile.responseText));
+            var data = JSON.parse(txtFile.responseText);
+
+            // Set chart to draw lines
+            const canvas = document.getElementById('linechart');
+            const context = canvas.getContext('2d');
+            context.moveTo(0,0);
+            context.beginPath();
+
+            // Get the required data for the line char
+            data.forEach(function(element) {
+              sight = Number(element.SIGHT)
+              date = Number(element.DATE)
+
+              // Plot line for x and y axis
+              context.lineTo(xAxis(date), yAxis(sight));
+              });
+              // Draw graph
+              context.stroke();
+
+              // Draw X and Y axis
+              context.moveTo(50, 400);
+              context.lineTo(50, 50);
+              context.moveTo(50, 400);
+              context.lineTo(400, 400);
+              context.stroke();
+        }
+
+    }
+
+    txtFile.open("GET", fileName);
+    txtFile.send();
+
+
+
+    </script>
+  </body>
+</html>

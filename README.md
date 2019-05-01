@@ -12,3 +12,8 @@ Week 2:
 
 Voor de outliers heb ik Suriname eruit gehaald omdat dit een foutieve meting was.
 Op de 1 of andere manier krijg ik een foutmelding, ondanks dat het programme wel runt. Ik snap alleen de error niet dus deze heb ik niet kunnen oplossen, excuus.
+
+Week 3:
+
+Op de een of andere manier krijg ik maar geen labels op de x- en y-as. Daarnaast voegde m'n code ook geen titel en dergelijke toe. Vandaar dat de grafiek er zo kaal en saai uitziet. Ik heb van alles
+geprobeerd, maar het werkte allemaal niet helaas.. 
