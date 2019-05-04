@@ -1,0 +1,28 @@
+<!--
+Name: Tim de Boer
+Studentnummer: 11202351
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="d3/d3.v5.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+            // Your beautiful D3 code will go here
+            // This is where your bar chart will go
+
+            // Title of page
+            d3.select("head").append("title").text("Barchart using D3");
+            // Create body variable
+            var body = d3.select("body");
+            // Write chart's title, name, studentnumber and information of dataset on page
+            body.append("h1").text("Het kiloton olie-equivalent per OECD land in 2015");
+            body.append("p").text("Name: Tim");
+            body.append("p").text("Studentnummer: 11202351");
+            body.append("p").text("The dataset consists of the oil-equivalent per OECD country of 2015. The dataset is from the OECD's website");
+    </script>
+  </body>
+</html>
