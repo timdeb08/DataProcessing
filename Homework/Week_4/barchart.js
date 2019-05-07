@@ -6,12 +6,12 @@ Dataset is from: www.OECD.org
 $( document ).ready(function() {
 
 // Title of page
-d3.select("head").append("title").text("Barchart using D3");
+d3.select("head").append("title").text("Barchart");
 // Create body variable
 var body = d3.select("body");
 // Write chart's title, name, studentnumber and information of dataset on page
 body.append("h1").text("Het kiloton olie-equivalent per OECD land in 2015")
-    .style("color", "teal")
+    .style("color", "black")
     .style("font-family", "Verdana");
 d3.select("p").style("color", "black").style("font-family", "Verdana");
 body.append("p").text("Name: Tim");
