@@ -14,7 +14,7 @@ body.append("h1").text("Het kiloton olie-equivalent per OECD land in 2015")
     .style("color", "black")
     .style("font-family", "Verdana");
 d3.select("p").style("color", "black").style("font-family", "Verdana");
-body.append("p").text("Name: Tim");
+body.append("p").text("Name: Tim de Boer");
 body.append("p").text("Studentnumber: 11202351");
 body.append("p").text("This data set contains the oil-equivalent of the OECD's countries in 2015. Dataset is from OECD website");
 
