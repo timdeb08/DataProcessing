@@ -110,5 +110,21 @@ json.then(function(data) {
       .attr("class", "axis")
       .call(yAxis);
 
+  // Text label for x axis
+  svg.append("text")
+      .attr("x", svgWidth/2)
+      .attr("y", svgHeight + 40)
+      .style("text-anchor", "end")
+      .text("Country");
+
+  // Text label for y axis
+  svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", 0 - (svgHeight/2))
+      .attr("y", 0 - margin.left - 5)
+      .attr("dy", "1em")
+      .style("text-anchor", "end")
+      .text("Value");
+
     });
 });
