@@ -8,21 +8,172 @@ Studentnummer: 11202351
   <head>
     <meta charset="utf-8">
     <script type="text/javascript" src="d3/d3.v5.js"></script>
+
+    <style type="text/css">
+
+            div.bar {
+              display: inline-block;
+              width: 20px;
+              height: 75px;
+              margin-right: 2px;
+              background-color: teal;
+            }
+
+            .axis path,
+            .axis line {
+                fill: none;
+                stroke: black;
+                shape-rendering: crispEdges;
+            }
+
+            .axis text {
+                font-family: Verdana;
+                font-size: 11px;
+            }
+
+            /* .d3-tip {
+              line-height: 1;
+              font-weight: bold;
+              padding: 12px;
+              background: rgba(0, 0, 0, 0.8);
+              color: #fff;
+              border-radius: 2px;
+            }
+
+            .d3-tip:after {
+              box-sizing: border-box;
+              display: inline;
+              font-size: 10px;
+              width: 100%;
+              line-height: 1;
+              color: rgba(0, 0, 0, 0.8);
+              content: "\25BC";
+              position: absolute;
+              text-align: center;
+            }
+
+            .d3-tip.n:after {
+              margin: -1px 0 0 0;
+              top: 100%;
+              left: 0;
+            } */
+
+    </style>
   </head>
   <body>
-    <script type="text/javascript">
-            // Your beautiful D3 code will go here
-            // This is where your bar chart will go
 
+    <script type="text/javascript">
             // Title of page
             d3.select("head").append("title").text("Barchart using D3");
             // Create body variable
             var body = d3.select("body");
             // Write chart's title, name, studentnumber and information of dataset on page
-            body.append("h1").text("Het kiloton olie-equivalent per OECD land in 2015");
+            body.append("h1").text("Het kiloton olie-equivalent per OECD land in 2015")
+                .style("color", "teal")
+                .style("font-family", "Verdana");
+            d3.select("p").style("color", "black").style("font-family", "Verdana");
             body.append("p").text("Name: Tim");
-            body.append("p").text("Studentnummer: 11202351");
-            body.append("p").text("The dataset consists of the oil-equivalent per OECD country of 2015. The dataset is from the OECD's website");
+            body.append("p").text("Studentnumber: 11202351");
+            body.append("p").text("This data set contains the oil-equivalent of the OECD's countries in 2015. Dataset is from OECD website");
+
+            // Create list for the values of json file
+            var ktoe = [];
+            // Load in the json file
+            var json = d3.json("d3.json");
+            json.then(function(data) {
+              for (var i = 0; i < Object.keys(data).length; i++) {
+                ktoe.push({'Country': Object.keys(data)[i], 'Value': data[Object.keys(data)[i]]['Value']})
+              }
+              console.log(ktoe);
+
+              // Set margin, width and heigth
+              var margin = {
+                  top: 50,
+                  right: 50,
+                  bottom: 50,
+                  left: 100
+                };
+              var svgWidth = 1200 - margin.left - margin.right;
+              var svgHeight = 500 - margin.top - margin.bottom;
+
+              // Scaling
+              const xScale = d3.scaleBand()
+                            .domain(ktoe.map(function(d) { return d.Country; }))
+                            .range([0, svgWidth])
+                            .paddingInner(0.20)
+                            .paddingOuter(0.20);
+
+              const yScale = d3.scaleLinear()
+                            .domain([0, d3.max(ktoe, function(d) { return d.Value; })])
+                            .range([svgHeight, 0]);
+
+              // Create SVG element
+              var svg = d3.select("body")
+                            .append("svg")
+                            .attr("width", svgWidth + margin.left + margin.right)
+                            .attr("height", svgHeight + margin.top + margin.bottom)
+                            .append("g")
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+              // Create rectangle inside SVG and include event handler
+              var rectangle = svg.selectAll("rect")
+                            .data(ktoe)
+                            .enter()
+                            .append("rect")
+                            .on("mouseover", function(d) {
+                              d3.select(this)
+                                .transition().duration(1)
+                                .attr("fill", "orange");
+                              // d3.select(this)
+                              //   .html((d.Country) + '<br/>' + d.Value)
+                              //   .style('left', d3.event.pageX + 'px')
+                              //   .style('top', d3.event.pageY - 28 + 'px');
+                            })
+                            .on("mouseout", function(){
+                                d3.select(this)
+                                  .transition().duration(1)
+                                  .attr("fill", "teal");
+                            });
+
+              rectangle.attr("x", function(d) {
+                            return xScale(d.Country);
+                            })
+                            .attr("y", function(d) {
+                              return yScale(d.Value);
+                            })
+                            .attr("width", xScale.bandwidth)
+                            .attr("height", function(d) {
+                              return svgHeight - yScale(d.Value);
+                            })
+                            .attr("fill", "teal")
+              // // Show value of the bar
+              // var tip = d3.tip()
+              //               .attr('class', 'd3-tip')
+              //               .direction('e')
+              //               .offset([-10, 0])
+              //               .html(function(d) {
+              //                 return "<strong>Value:</strong> <span style='color:red'>" + d.Value + "</span>";
+              //               })
+              // svg.call("tip");
+
+
+              // Create the axis
+              var xAxis = d3.axisBottom(xScale);
+              var yAxis = d3.axisLeft(yScale)
+                            .ticks(7)
+                            .tickFormat(function(d) {
+                              return d + " " + "KTOE";
+                            });
+              // Call the axis
+              svg.append("g")
+                  .attr("class", "axis")
+                  .attr("transform", "translate(0," + svgHeight + ")")
+                  .call(xAxis);
+              svg.append("g")
+                  .attr("class", "axis")
+                  .call(yAxis);
+
+            });
+
     </script>
   </body>
 </html>

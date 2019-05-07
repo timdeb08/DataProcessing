@@ -5,7 +5,6 @@
 This file converts CSV file to JSON file
 """
 import csv
-import numpy as np
 import pandas as pd
 import json
 
@@ -15,7 +14,7 @@ def read_file():
 
     # Read the csv file and convert into panda dataframa
     df = pd.read_csv(INPUT_CSV, usecols= ['TIME', 'LOCATION', 'Value', 'MEASURE'])
-    # Set index of dataframe equal to Country
+    # Set country as index
     df.set_index('LOCATION', inplace=True)
 
     return df
@@ -27,12 +26,16 @@ def clean_dataframe(df):
     # Filter rows with measure PC_PRYENRGSUPPLY and thereafter delete the measure column
     df = df[df['MEASURE'] == 'KTOE']
     df = df.drop(['MEASURE'], axis=1)
-    # Get the measures of the year 2015
+    # Get the measures of the year 2015 and drop the time column
     df = df[df['TIME'] == 2015]
+    df = df.drop(['TIME'], axis=1)
+    # Drop the location OECD
+    df = df.drop("OECD", axis=0)
 
+    # Remove outliers
+    #df.drop(df[df['Value'] > 100000.0].index, inplace=True)
     # Convert rows to numeric values
     df['Value'] = (df['Value'].astype(float))
-    df['TIME'] = pd.to_datetime(df['TIME']).astype(np.int64)
 
     return df
 
@@ -40,7 +43,7 @@ def write_json(df):
 
     # Write to json file
     with open('d3.json', 'w') as f:
-        json.dump(df.T.to_dict(orient='dict'), f)
+        json.dump(df.to_dict(orient='index'), f)
 
 
 if __name__ == "__main__":
@@ -49,6 +52,5 @@ if __name__ == "__main__":
     dataframe = read_file()
     # Get cleaned dataframe
     cleaned_dataframe = clean_dataframe(dataframe)
-    print(cleaned_dataframe)
     # Write to json
     write_json(cleaned_dataframe)
