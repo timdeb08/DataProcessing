@@ -1,0 +1,36 @@
+/*
+Style for the index.html
+*/
+
+div.bar {
+  display: inline-block;
+  width: 20px;
+  height: 75px;
+  margin-right: 2px;
+  background-color: teal;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: Verdana;
+    font-size: 11px;
+}
+
+div.tooltip {
+     position: absolute;
+     text-align: center;
+     padding: .5rem;
+     background: white;
+     color: teal;
+     box-sizing: border-box;
+     display: inline;
+     font-size: 15px;
+     border: 1px solid #313639;
+     line-height: 0.5;
+}
