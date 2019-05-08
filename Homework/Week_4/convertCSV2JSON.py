@@ -32,8 +32,6 @@ def clean_dataframe(df):
     # Drop the location OECD
     df = df.drop("OECD", axis=0)
 
-    # Remove outliers
-    #df.drop(df[df['Value'] > 100000.0].index, inplace=True)
     # Convert rows to numeric values
     df['Value'] = (df['Value'].astype(float))
 
