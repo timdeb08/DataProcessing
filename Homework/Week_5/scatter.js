@@ -107,7 +107,7 @@ Promise.all(requests).then(function(response) {
     // Create circles inside SVG
     // Set date variable equal to 2015
     var year = '2015';
-    d3.selectAll("year")
+    d3.selectAll(".yrs")
       .on("click", function() {
         var year = this.getAttribute("value");
         svg.selectAll("circle")
@@ -171,7 +171,7 @@ Promise.all(requests).then(function(response) {
 
     // Create the axis
     var xAxis = d3.axisBottom(xScale)
-                  .ticks(7)
+                  .ticks(10)
                   .tickFormat(function(d) { return d; });
     var yAxis = d3.axisLeft(yScale)
                   .ticks(7)
