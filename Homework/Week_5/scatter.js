@@ -5,7 +5,6 @@ This page loads in the dataset and creates a scatterplot of the values
 API is from: www.OECD.org
 */
 
-
 // Define the requests for the datasets
 var teensInViolentArea = "https://stats.oecd.org/SDMX-JSON/data/CWB/AUS+AUT+BEL+BEL-VLG+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+OAVG+NMEC+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+PER+ROU+RUS+ZAF.CWB11/all?startTime=2010&endTime=2017"
 var teenPregnancies = "https://stats.oecd.org/SDMX-JSON/data/CWB/AUS+AUT+BEL+BEL-VLG+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+OAVG+NMEC+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+PER+ROU+RUS+ZAF.CWB46/all?startTime=1960&endTime=2017"
@@ -217,11 +216,11 @@ Promise.all(requests).then(function(response) {
 
     // Legend for the scatterplot
     svg.append("text").attr("x", 1000).attr("y", 30).text("Legend").style("font-weight", "bold")
-    svg.append("circle").attr("cx", 1000).attr("cy", 50).attr("r", 5).attr("fill", "#ffffcc")
-    svg.append("circle").attr("cx", 1000).attr("cy", 70).attr("r", 5).attr("fill", "#a1dab4")
-    svg.append("circle").attr("cx", 1000).attr("cy", 90).attr("r", 5).attr("fill", "#41b6c4")
-    svg.append("circle").attr("cx", 1000).attr("cy", 110).attr("r", 5).attr("fill", "#2c7fb8")
-    svg.append("circle").attr("cx", 1000).attr("cy", 130).attr("r", 5).attr("fill", "#253494")
+    svg.append("circle").attr("cx", 1000).attr("cy", 50).attr("r", 5).style("fill", "#ffffcc")
+    svg.append("circle").attr("cx", 1000).attr("cy", 70).attr("r", 5).style("fill", "#a1dab4")
+    svg.append("circle").attr("cx", 1000).attr("cy", 90).attr("r", 5).style("fill", "#41b6c4")
+    svg.append("circle").attr("cx", 1000).attr("cy", 110).attr("r", 5).style("fill", "#2c7fb8")
+    svg.append("circle").attr("cx", 1000).attr("cy", 130).attr("r", 5).style("fill", "#253494")
     svg.append("text").attr("x", 1020).attr("y", 54).text("GDP < 20000")
     svg.append("text").attr("x", 1020).attr("y", 74).text("20000 > GDP < 30000")
     svg.append("text").attr("x", 1020).attr("y", 94).text("30000 > GDP < 40000")
