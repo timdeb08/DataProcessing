@@ -1,268 +1,228 @@
-window.onload = function() {
 
-    // Define the requests for the datasets
-    var teensInViolentArea = "https://stats.oecd.org/SDMX-JSON/data/CWB/AUS+AUT+BEL+BEL-VLG+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+OAVG+NMEC+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+PER+ROU+RUS+ZAF.CWB11/all?startTime=2010&endTime=2017"
-    var teenPregnancies = "https://stats.oecd.org/SDMX-JSON/data/CWB/AUS+AUT+BEL+BEL-VLG+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+OAVG+NMEC+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+PER+ROU+RUS+ZAF.CWB46/all?startTime=1960&endTime=2017"
-    var GDP = "https://stats.oecd.org/SDMX-JSON/data/SNA_TABLE1/AUS+AUT+BEL+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+EU28+EU15+OECDE+OECD+OTF+NMEC+ARG+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+ROU+RUS+SAU+ZAF+FRME+DEW.B1_GE.HCPC/all?startTime=2012&endTime=2018&dimensionAtObservation=allDimensions"
-    var requests = [d3.json(teensInViolentArea), d3.json(teenPregnancies), d3.json(GDP)];
 
-    Promise.all(requests).then(function(response) {
-        // console.log(response);
+// Define the requests for the datasets
+var teensInViolentArea = "https://stats.oecd.org/SDMX-JSON/data/CWB/AUS+AUT+BEL+BEL-VLG+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+OAVG+NMEC+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+PER+ROU+RUS+ZAF.CWB11/all?startTime=2010&endTime=2017"
+var teenPregnancies = "https://stats.oecd.org/SDMX-JSON/data/CWB/AUS+AUT+BEL+BEL-VLG+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+OAVG+NMEC+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+PER+ROU+RUS+ZAF.CWB46/all?startTime=1960&endTime=2017"
+var GDP = "https://stats.oecd.org/SDMX-JSON/data/SNA_TABLE1/AUS+AUT+BEL+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+EU28+EU15+OECDE+OECD+OTF+NMEC+ARG+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+ROU+RUS+SAU+ZAF+FRME+DEW.B1_GE.HCPC/all?startTime=2012&endTime=2018&dimensionAtObservation=allDimensions"
+var requests = [d3.json(teensInViolentArea), d3.json(teenPregnancies), d3.json(GDP)];
 
-        // Get the values of each dataset
-        var teenViolent = Object.values(transformResponseTeen(response[0]));
-        var teenPreg = Object.values(transformResponseTeen(response[1]));
-        var countryGDP = Object.values(transformResponseGDP(response[2]));
-        // console.log(countryGDP);
-        // console.log(teenPreg);
-        //console.log(teenViolent);
+Promise.all(requests).then(function(response) {
 
-        // Create datastructure
-        var dataStructure = {
-          "2012" : [],
-          "2013" : [],
-          "2014" : [],
-          "2015" : []
+    // Get the values of each dataset
+    var teenViolent = Object.values(transformResponseTeen(response[0]));
+    var teenPreg = Object.values(transformResponseTeen(response[1]));
+    var countryGDP = Object.values(transformResponseGDP(response[2]));
+
+    // Create datastructure
+    var dataStructure = {
+      "2012" : [],
+      "2013" : [],
+      "2014" : [],
+      "2015" : []
+    }
+
+    // Add teen violence to dict
+    Object.keys(teenViolent).forEach(function(keys) {
+      teenViolent[keys].forEach(function(value) {
+        if (dataStructure[value.Time]) {
+          dataStructure[value.Time].push({
+            "Country": value.Country,
+            "Violence": value.Datapoint
+          })
         }
-
-        // Get the results from convertion
-        Object.keys(teenViolent).forEach(function(keys) {
-          teenViolent[keys].forEach(function(value) {
-            if (dataStructure[value.Time]) {
-              dataStructure[value.Time].push({
-                "Country": value.Country,
-                "Violence": value.Datapoint
-              })
-            }
-          })
-        });
-
-        Object.keys(teenPreg).forEach(function(keys) {
-          teenPreg[keys].forEach(function(value) {
-            if (dataStructure[value.Time]) {
-              dataStructure[value.Time].forEach(function(d) {
-                if (d.Country == value.Country) {
-                  d["teenPreg"] = value.Datapoint
-                }
-              })
-            }
-          })
-        });
-
-        Object.keys(countryGDP).forEach(function(keys) {
-          countryGDP[keys].forEach(function(value) {
-            if (dataStructure[value.Year]) {
-              dataStructure[value.Year].forEach(function(d) {
-                if (d.Country == value.Country) {
-                  d["GDP"] = value.Datapoint
-                }
-              })
-            }
-          })
-        });
-        return dataStructure;
-
-    }).catch(function(e) {
-        throw(e);
+      })
     });
-  };
 
-  /********
-   * Transforms response of OECD request for teen pregancy rates.
-   * https://stats.oecd.org/SDMX-JSON/data/CWB/AUS+AUT+BEL+BEL-VLG+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+OAVG+NMEC+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+PER+ROU+RUS+ZAF.CWB46/all?startTime=1960&endTime=2017
-   *
-   * Also used for transform of response of OECD request for children living in area with high rates of crime and violence.
-   * https://stats.oecd.org/SDMX-JSON/data/CWB/AUS+AUT+BEL+BEL-VLG+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+OAVG+NMEC+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+PER+ROU+RUS+ZAF.CWB11/all?startTime=2010&endTime=2017
-   **/
-  function transformResponseTeen(data) {
+    // Add teen pregancy to dict
+    Object.keys(teenPreg).forEach(function(keys) {
+      teenPreg[keys].forEach(function(value) {
+        if (dataStructure[value.Time]) {
+          dataStructure[value.Time].forEach(function(d) {
+            if (d.Country == value.Country) {
+              d["teenPreg"] = value.Datapoint
+            }
+          })
+        }
+      })
+    });
 
-      // Save data
-      let originalData = data;
+    // Add GDP to dict
+    Object.keys(countryGDP).forEach(function(keys) {
+      countryGDP[keys].forEach(function(value) {
+        if (dataStructure[value.Year]) {
+          dataStructure[value.Year].forEach(function(d) {
+            if (d.Country == value.Country) {
+              d["GDP"] = value.Datapoint
+            }
+          })
+        }
+      })
+    });
 
-      // Access data property of the response
-      let dataHere = data.dataSets[0].series;
-
-      // Access variables in the response and save length
-      let series = data.structure.dimensions.series;
-      let serieLength = series.length;
-
-      // Set up array of variables and length
-      let varArray = [];
-      let lenArray = [];
-
-      series.forEach(function(serie) {
-        varArray.push(serie);
-        lenArray.push(serie.values.length);
-      });
-
-      // Get the time periods of the dataset
-      let observation = data.structure.dimensions.observation[0];
-
-      // Add time periods to the variables but since it's not included in the
-      // 0:0:0 format it's not included in the array of lengths
-      varArray.push(observation);
-
-      // Create array of all possible combinations of the 0:0:0 format
-      let strings = Object.keys(dataHere);
-
-      // Set up output object, an object with each country being a key and an array
-      // as value
-      let dataObject = {};
-
-      // For each string we've created
-      strings.forEach(function(string) {
-
-        // For each observation and its index
-        observation.values.forEach(function(obs, index) {
-          let data = dataHere[string].observations[index];
-          if (data != undefined) {
-
-            // Set up temporary object
-            let tempObj = {};
-
-            let tempString = string.split(":").slice(0, -1);
-            tempString.forEach(function(s, indexi){
-                    tempObj[varArray[indexi].name] = varArray[indexi].values[s].name;
-                });
-            // Every datapoint has a time and datapoint
-            tempObj["Time"] = obs.name;
-            tempObj["Datapoint"] = data[0];
-            tempObj["Indicator"] = originalData.structure.dimensions.series[1].values[0].name;
-
-            // Add to total object
-            if (dataObject[tempObj["Country"]] == undefined){
-                  dataObject[tempObj["Country"]] = [tempObj];
-                } else {
-                  dataObject[tempObj["Country"]].push(tempObj);
-                };
-
+    // Delete countries with unknown values
+    Object.keys(dataStructure).forEach(function(years) {
+      for (year = 2012; year < 2016; year++) {
+        for (i = 0; i < dataStructure[year].length; i++) {
+          if (!(dataStructure[year][i].GDP) || !(dataStructure[year][i].teenPreg) || !(dataStructure[year][i].Violence)) {
+            dataStructure[year].splice(i);
           }
-        });
+        }
+      }
+    });
+
+    // Title of page
+    d3.select("head").append("title").text("Scatterplot");
+
+    // Set margin, width and heigth
+    var margin = {top: 50, right: 50, bottom: 50, left: 70};
+    var width = 1400 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+    var paddingRight = 300;
+
+    // Scale the x-axis
+    const xScale = d3.scaleLinear()
+                  .domain([0, d3.max(dataStructure['2015'], function(d) { return d.Violence; })])
+                  .range([0, width - paddingRight])
+                  .nice();
+
+    // Scale the y-axis
+    const yScale = d3.scaleLinear()
+                  .domain([0, d3.max(dataStructure["2015"], function(d) { return d.teenPreg; })])
+                  .range([height, 0])
+                  .nice();
+
+    // Define div for tooltip
+    var div = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
+
+    // Create svg element
+    var svg = d3.select("body")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Create circles inside SVG
+    // Set date variable equal to 2015
+    var year = '2015';
+    d3.selectAll("year")
+      .on("click", function() {
+        var year = this.getAttribute("value");
+        svg.selectAll("circle")
+            .data(dataStructure[year])
+            .transition()
+            .attr("cx", function(d) { return xScale(d.Violence); })
+            .attr("cy", function(d) { return yScale(d.teenPreg); })
+            .attr("fill", function(d){
+              if (d.GDP < 20000){ return "#ffffcc"}
+              if (d.GDP > 20000 && d.GDP < 30000){ return "#a1dab4"}
+              if (d.GDP > 30000 && d.GDP < 40000){ return "#41b6c4"}
+              if (d.GDP > 40000 && d.GDP < 50000){ return "#2c7fb8"}
+              if (d.GDP > 50000){ return "#253494"}
+            })
+            .transition()
+            .duration(500);
+          });
+
+    // Include event handler
+    svg.selectAll("circle")
+      .data(dataStructure[year])
+      .enter()
+      .append("circle")
+      .attr("cx", function(d) { return xScale(d.Violence); })
+      .attr("cy", function(d) { return yScale(d.teenPreg); })
+      .attr("r", 5)
+      .attr("fill", function(d){
+        if (d.GDP < 20000){ return "#ffffcc"}
+        if (d.GDP > 20000 && d.GDP < 30000){ return "#a1dab4"}
+        if (d.GDP > 30000 && d.GDP < 40000){ return "#41b6c4"}
+        if (d.GDP > 40000 && d.GDP < 50000){ return "#2c7fb8"}
+        if (d.GDP > 50000){ return "#253494"}
+      })
+      .on("mouseover", function(d, i) {
+            d3.select(this)
+              .transition().duration(1)
+              .attr("fill", "orange");
+
+            // Shows bar value
+            div.transition().duration(50)
+              .style("opacity", 1)
+            div.html(d.Country)
+              .style("left", (d3.event.pageX - 50) + "px")
+              .style("top", (d3.event.pageY - 50) + "px");
+      })
+      .on("mouseout", function(d, i){
+            d3.select(this)
+              .transition().duration(1)
+              .attr("fill", function(d){
+                if (d.GDP < 20000){ return "#ffffcc"}
+                if (d.GDP > 20000 && d.GDP < 30000){ return "#a1dab4"}
+                if (d.GDP > 30000 && d.GDP < 40000){ return "#41b6c4"}
+                if (d.GDP > 40000 && d.GDP < 50000){ return "#2c7fb8"}
+                if (d.GDP > 50000){ return "#253494"}
+              });
+
+            // Disappears bar value
+            div.transition().duration(50)
+              .style("opacity", 0);
       });
 
-      // Return the dict
-      return dataObject;
-  }
+    // Create the axis
+    var xAxis = d3.axisBottom(xScale)
+                  .ticks(7)
+                  .tickFormat(function(d) { return d; });
+    var yAxis = d3.axisLeft(yScale)
+                  .ticks(7)
+                  .tickFormat(function(d) { return d; });
 
-  /********
- * Transforms response of OECD request for GDP.
- * https://stats.oecd.org/SDMX-JSON/data/SNA_TABLE1/AUS+AUT+BEL+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+EU28+EU15+OECDE+OECD+OTF+NMEC+ARG+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+ROU+RUS+SAU+ZAF+FRME+DEW.B1_GE.HCPC/all?startTime=2012&endTime=2018&dimensionAtObservation=allDimensions
- **/
-  function transformResponseGDP(data){
+    // Call the axis
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+    svg.append("g")
+        .attr("class", "axis")
+        .call(yAxis);
 
-    // Save data
-    let originalData = data;
+    // Text label for x axis
+    svg.append("text")
+        .attr("x", width/2)
+        .attr("y", height + 40)
+        .style("text-anchor", "end")
+        .text("Percentage of teens living in a violent area in a specific country");
 
-    // access data
-    let dataHere = data.dataSets[0].observations;
+    // Text label for y axis
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", 0 - (height/13))
+        .attr("y", 0 - margin.left)
+        .attr("dy", "1em")
+        .style("text-anchor", "end")
+        .text("The percentage of teens getting pregnant in a specific country");
 
-    // access variables in the response and save length for later
-    let series = data.structure.dimensions.observation;
-    let seriesLength = series.length;
+    // Title for scatterplot
+    svg.append("text")
+        .attr("x", width/4)
+        .attr("y", height - 420)
+        .text("Correlation teen pregnancies against teens living in violent areas")
+        .style("font-weight", "bold");
 
-    // get the time periods in the dataset
-    let observation = data.structure.dimensions.observation[0];
-
-    // set up array of variables and array of lengths
-    let varArray = [];
-    let lenArray = [];
-
-    series.forEach(function(serie){
-        varArray.push(serie);
-        lenArray.push(serie.values.length);
-    });
-
-    // add time periods to the variables, but since it's not included in the
-    // 0:0:0 format it's not included in the array of lengths
-    varArray.push(observation);
-
-    // create array with all possible combinations of the 0:0:0 format
-    let strings = Object.keys(dataHere);
-
-    // set up output array, an array of objects, each containing a single datapoint
-    // and the descriptors for that datapoint
-    let dataObject = {};
-
-    // for each string that we created
-    strings.forEach(function(string){
-        observation.values.forEach(function(obs, index){
-            let data = dataHere[string];
-            if (data != undefined){
-
-                // set up temporary object
-                let tempObj = {};
-
-                // split string into array of elements seperated by ':'
-                let tempString = string.split(":")
-                tempString.forEach(function(s, index){
-                    tempObj[varArray[index].name] = varArray[index].values[s].name;
-                });
-
-                tempObj["Datapoint"] = data[0];
-
-                // Add to total object
-                if (dataObject[tempObj["Country"]] == undefined){
-                  dataObject[tempObj["Country"]] = [tempObj];
-                } else if (dataObject[tempObj["Country"]][dataObject[tempObj["Country"]].length - 1]["Year"] != tempObj["Year"]) {
-                    dataObject[tempObj["Country"]].push(tempObj);
-                };
-
-            }
-        });
-    });
-
-    // return the finished product!
-    return dataObject;
-}
-
-function createScatterplot(dataset) {
-
-  // Set margin, width and heigth
-  var margin = {top: 50, right: 50, bottom: 50, left: 100};
-  var width = 1200 - margin.left - margin.right;
-  var height = 500 - margin.top - margin.bottom;
-
-  // Scale the x-axis
-  var xScale = d3.scaleLinear()
-                .range([0, width]);
-
-  // Create x-axis
-  var xAxis = d3.axisBottom(xScale);
-
-  // Call the axis
-  svg.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + svgHeight + ")")
-      .call(xAxis);
-
-  // Scale the y-axis
-  var yScale = d3.scaleLinear()
-                range([height, 0]);
-  // Create y-axis
-  var yAxis = d3.axisLeft(yScale);
-
-  // Call the y-axis
-  svg.append("g")
-      .attr("class", "axis")
-      .call(yAxis);
-
-  // Create svg element
-  var svg = d3.select("svg")
-              .attr("width", w + margin.left + margin.right)
-              .attr("height", h + margin.top + margin.bottom)
-              .append("g")
-              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  // Define div for tooltip
-  var div = d3.select("body").append("div")
-              .attr("class", "tooltip")
-              .style("opacity", 0);
-
-  // Create circles inside SVG and include event handler
-  var circles = svg.selectAll("circle").data(......)
-                  .enter()
-                  .append("circle")
+    // Legend for the scatterplot
+    svg.append("text").attr("x", 1000).attr("y", 30).text("Legend").style("font-weight", "bold")
+    svg.append("circle").attr("cx", 1000).attr("cy", 50).attr("r", 5).attr("fill", "#ffffcc")
+    svg.append("circle").attr("cx", 1000).attr("cy", 70).attr("r", 5).attr("fill", "#a1dab4")
+    svg.append("circle").attr("cx", 1000).attr("cy", 90).attr("r", 5).attr("fill", "#41b6c4")
+    svg.append("circle").attr("cx", 1000).attr("cy", 110).attr("r", 5).attr("fill", "#2c7fb8")
+    svg.append("circle").attr("cx", 1000).attr("cy", 130).attr("r", 5).attr("fill", "#253494")
+    svg.append("text").attr("x", 1020).attr("y", 54).text("GDP < 20000")
+    svg.append("text").attr("x", 1020).attr("y", 74).text("20000 > GDP < 30000")
+    svg.append("text").attr("x", 1020).attr("y", 94).text("30000 > GDP < 40000")
+    svg.append("text").attr("x", 1020).attr("y", 114).text("40000 > GDP < 50000")
+    svg.append("text").attr("x", 1020).attr("y", 134).text("GDP > 50000")
 
 
-
-}
+}).catch(function(e) {
+    throw(e);
+});

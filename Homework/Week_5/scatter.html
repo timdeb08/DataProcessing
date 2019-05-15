@@ -10,12 +10,28 @@ Interactive scatterplot
     <meta charset="utf-8">
     <script type="text/javascript" src="d3/d3.v5.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script type="text/javascript" src="scatter.js"></script>
+    <script src="scatter.js"></script>
+    <script src="transformResponseGDP.js"></script>
+    <script src="transformResponseTeen.js"></script>
     <link rel="stylesheet" href="scatter.css">
   </head>
   <body>
-    <title>
-      Scatterplot
-    </title>
+    <div class="text">
+      <h1>Scatterplot about the correlation between teens living in violent areas and teen pregnancies</h1>
+      <p>Name: Tim de Boer</p>
+      <p>11202351</p>
+      <p>The dataset contains data of the years 2012 till 2015. API is from OECD website</p>
+    </div>
+
+    <div class="dropdown">
+      <button type="button" class="dropbtn" data-toggle="dropdown">Year</button>
+      <div class="dropdown-content" role="content">
+        <a class="year" value="2012" href="#">2012</a>
+        <a class="year" value="2013" href="#">2013</a>
+        <a class="year" value="2014" href="#">2014</a>
+        <a class="year" value="2015" href="#">2015</a>
+      </div>
+    </div>
+
   </body>
 </html>
