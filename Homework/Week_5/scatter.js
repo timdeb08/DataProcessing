@@ -1,3 +1,9 @@
+/*
+Name: Tim de Boer
+Studentnummer: 11202351
+This page loads in the dataset and creates a scatterplot of the values
+API is from: www.OECD.org
+*/
 
 
 // Define the requests for the datasets
