@@ -20,4 +20,8 @@ geprobeerd, maar het werkte allemaal niet helaas.. Excuses hiervoor!
 
 Week 4:
 
-Een barchart over de kiloton olie-equivalenten van de OECD landen. 
+Een barchart over de kiloton olie-equivalenten van de OECD landen.
+
+Week 5:
+
+Scatterplot over teen pregnancies, teens in violent areas and GDP.
