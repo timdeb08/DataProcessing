@@ -75,6 +75,7 @@ window.onload = function() {
    * https://stats.oecd.org/SDMX-JSON/data/CWB/AUS+AUT+BEL+BEL-VLG+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+OAVG+NMEC+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+PER+ROU+RUS+ZAF.CWB11/all?startTime=2010&endTime=2017
    **/
   function transformResponseTeen(data) {
+
       // Save data
       let originalData = data;
 
@@ -110,6 +111,7 @@ window.onload = function() {
 
       // For each string we've created
       strings.forEach(function(string) {
+
         // For each observation and its index
         observation.values.forEach(function(obs, index) {
           let data = dataHere[string].observations[index];
@@ -137,6 +139,7 @@ window.onload = function() {
           }
         });
       });
+
       // Return the dict
       return dataObject;
   }
@@ -145,8 +148,6 @@ window.onload = function() {
  * Transforms response of OECD request for GDP.
  * https://stats.oecd.org/SDMX-JSON/data/SNA_TABLE1/AUS+AUT+BEL+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+EU28+EU15+OECDE+OECD+OTF+NMEC+ARG+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+ROU+RUS+SAU+ZAF+FRME+DEW.B1_GE.HCPC/all?startTime=2012&endTime=2018&dimensionAtObservation=allDimensions
  **/
-
-
   function transformResponseGDP(data){
 
     // Save data
@@ -215,6 +216,7 @@ window.onload = function() {
 }
 
 function createScatterplot(dataset) {
+
   // Set margin, width and heigth
   var margin = {top: 50, right: 50, bottom: 50, left: 100};
   var width = 1200 - margin.left - margin.right;
@@ -223,8 +225,10 @@ function createScatterplot(dataset) {
   // Scale the x-axis
   var xScale = d3.scaleLinear()
                 .range([0, width]);
+
   // Create x-axis
   var xAxis = d3.axisBottom(xScale);
+
   // Call the axis
   svg.append("g")
       .attr("class", "axis")
@@ -236,6 +240,7 @@ function createScatterplot(dataset) {
                 range([height, 0]);
   // Create y-axis
   var yAxis = d3.axisLeft(yScale);
+
   // Call the y-axis
   svg.append("g")
       .attr("class", "axis")
@@ -248,7 +253,15 @@ function createScatterplot(dataset) {
               .append("g")
               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  
+  // Define div for tooltip
+  var div = d3.select("body").append("div")
+              .attr("class", "tooltip")
+              .style("opacity", 0);
+
+  // Create circles inside SVG and include event handler
+  var circles = svg.selectAll("circle").data(......)
+                  .enter()
+                  .append("circle")
 
 
 
