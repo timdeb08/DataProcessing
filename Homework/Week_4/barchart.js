@@ -101,7 +101,7 @@ json.then(function(data) {
                 .tickFormat(function(d) {
                   return d + " " + "KTOE";
                 });
-                
+
   // Call the axis
   svg.append("g")
       .attr("class", "axis")

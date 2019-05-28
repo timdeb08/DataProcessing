@@ -8,27 +8,37 @@ Studentnummer: 11202351
   <head>
     <meta charset="utf-8">
     <script type="text/javascript" src="d3/d3.v5.js"></script>
+    <script>
+      var d3v5 = window.d3;
+      window.d3 = null;
+    </script>
+    <script src="https://d3js.org/d3.v3.js"></script>
+    <script>
+      var d3v3 = d3;
+      window.d3 = null;
+    </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="linked.js"></script>
     <link rel="stylesheet" href="linked.css">
   </head>
   <body>
     <div class="text">
-      <h1>Scatterplot about the correlation between teens living in violent areas and teen pregnancies</h1>
+      <h1></h1>
       <p>Name: Tim de Boer</p>
       <p>11202351</p>
-      <p>The dataset contains data of the years 2012 till 2015. API is from OECD website</p>
+      <p></p>
     </div>
-
+<!--
     <div class="dropdown">
       <button type="button" class="dropbtn" data-toggle="dropdown">Year</button>
       <div class="dropdown-content" role="content">
-        <a class="yrs" value="2012" href="#">2012</a>
-        <a class="yrs" value="2013" href="#">2013</a>
         <a class="yrs" value="2014" href="#">2014</a>
         <a class="yrs" value="2015" href="#">2015</a>
+        <a class="yrs" value="2016" href="#">2016</a>
+        <a class="yrs" value="2017" href="#">2017</a>
+        <a class="yrs" value="2018" href="#">2018</a>
       </div>
-    </div>
+    </div> -->
 
   </body>
 </html>

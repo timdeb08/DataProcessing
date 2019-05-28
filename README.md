@@ -25,4 +25,4 @@ Een barchart over de kiloton olie-equivalenten van de OECD landen.
 Week 5:
 
 Scatterplot over teen pregnancies, teens in violent areas and GDP.
-Ik heb voor het maken van de scatterplot geen functies meer kunnen schrijven. Ik vond het erg lastig om de scatterplot interactief te maken en om daarnaast de code in functies te schrijven, vandaar dat de functies ontbreken. 
+Ik heb voor het maken van de scatterplot geen functies meer kunnen schrijven. Ik vond het erg lastig om de scatterplot interactief te maken en om daarnaast de code in functies te schrijven, vandaar dat de functies ontbreken.
