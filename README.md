@@ -26,3 +26,7 @@ Week 5:
 
 Scatterplot over teen pregnancies, teens in violent areas and GDP.
 Ik heb voor het maken van de scatterplot geen functies meer kunnen schrijven. Ik vond het erg lastig om de scatterplot interactief te maken en om daarnaast de code in functies te schrijven, vandaar dat de functies ontbreken.
+
+Week 6:
+
+Ik krijg de pie chart maar niet correct gemaakt. Heb de data ook niet goed geprocessed, waar ik pas veel te laat achterkwam. Heb het dus helaas niet af kunnen maken. De barchart is wel goed, maar goed, zonder tweede visualisatie is het lastig om ze te linken.. Excuus hiervoor!
